@@ -285,8 +285,12 @@ class App(object):
 
     def read_10_first_lines(self):
         for _ in iter(range(10)):
-            next(self._data_1)
-            next(self._data_2)
+            try:
+                next(self._data_1)
+                next(self._data_2)
+            except StopIteration:
+                # Handle StopIteration here if needed
+                pass
 
     @route('/query')
     def handle_query(self, x):
@@ -297,7 +301,7 @@ class App(object):
             t1, bids1, asks1 = next(self._current_book_1)
             t2, bids2, asks2 = next(self._current_book_2)
         except Exception as e:
-            print("error getting stocks...reinitalizing app")
+            print("error getting stocks...reinitializing app")
             self.__init__()
             t1, bids1, asks1 = next(self._current_book_1)
             t2, bids2, asks2 = next(self._current_book_2)
